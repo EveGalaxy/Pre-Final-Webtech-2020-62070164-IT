@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre_Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<style>
+    body {
+            font-family: 'Kanit', sans-serif;
+        }
+
+        .card {
+            width: 250px;
+            margin-top: 30px;
+        }
+
+</style>
+<body>
+    <div class="container">
+        <div class="row" id="row_1"></div>
+    </div>
+
+    <script>
+        let requestURL = 'ezquiz.json'; 
+        let request = new XMLHttpRequest(); 
+        request.onreadystatechange = function () { 
+            if (request.readyState == 4 && request.status == 200) {             
+                dataReportStatus(JSON.parse(request.responseText));            
+            } }; 
+        request.open("GET", requestURL, true); 
+        request.send(); 
+
+        function dataReportStatus(data) {
+            for (let i=0 ; i < data.tracks.items.length; i++){
+                let row = document.getElementById("row_1");
+                let col = document.createElement("div");
+                col.setAttribute("class", "col-4");
+                let card = document.createElement("div");
+                card.setAttribute("class", "card");
+                let img = document.createElement("img");
+                img.setAttribute("class", "card-img-top");
+                img.setAttribute("src", data.tracks.items[i].album.images[0].url);
+
+                let card_body = document.createElement("div");
+                card_body.setAttribute("class", "card-body");
+
+                let card_title = document.createElement("h4");
+                card_title.setAttribute("class", "card-title");
+                card_title.appendChild(document.createTextNode(data.tracks.items[i].album.name));
+
+                let card_text = document.createElement("p");
+                card_text.appendChild(document.createTextNode("Artits: " + data.tracks.items[i].album.artists[0].name));
+                card_text.appendChild(document.createElement("br"));
+                card_text.appendChild(document.createTextNode("Release date: " + data.tracks.items[i].album.release_date));
+                card_text.appendChild(document.createElement("br"));
+                card_text.appendChild(document.createTextNode("Avaliable: " + data.tracks.items[i].album.available_markets.length));
+                card_text.appendChild(document.createElement("br"));
+                
+                card.appendChild(img);
+                card.appendChild(card_body);
+                card_body.appendChild(card_title);
+                card_body.appendChild(card_text);
+                col.appendChild(card);
+                row.appendChild(col);
+            }
+        }
+    </script>
+
+    
+
+</body>
+</html>
